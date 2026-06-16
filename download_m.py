@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 from pathlib import Path
 import shutil
 
+print("This will oigaize your whole Windows/Linux default folder's files")
+input("Press enter to start")
 print("Your Downloads are going to be managed")
-
-path = Path.home() / "Downloads"
 
 file_types = {
     "Images": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
@@ -17,34 +19,43 @@ file_types = {
     "Apps": [".apk", ".xapk"]
 }
 
-if path.exists():
-    print("Directory Opened")
+paths = [
+    Path.home() / "Downloads",
+    Path.home() / "Desktop",
+    Path.home() / "Documents",
+    Path.home() / "Pictures",
+    Path.home() / "Videos",
+    Path.home() / "Music",
+]
 
 
-def move_files(File, Folder):
-
-    source = File
-    destination = Path(path / Folder) / source.name
-
-    shutil.move(source, destination)
-    print(File, "Succesfully Moved to", {Folder})
+def move_files(file, folder, base_path):
+    destination = (base_path / folder) / file.name
+    shutil.move(file, destination)
+    print(file.name, "Successfully moved to", folder)
 
 
+def file_process(folder_path):
 
-for item in path.iterdir():
+    if not folder_path.exists():
+        return
 
-    if item.is_file:
+    print("Directory Opened:", folder_path)
 
-        for folder, extensions in file_types.items():
+    for item in folder_path.iterdir():
 
-            if item.suffix.lower() in extensions:
+        if item.is_file():
 
-                Path(path / folder).mkdir(exist_ok=True)
-                
-                move_files(item, folder)
+            for folder, extensions in file_types.items():
 
-                break
-                
+                if item.suffix.lower() in extensions:
+
+                    (folder_path / folder).mkdir(exist_ok=True)
+
+                    move_files(item, folder, folder_path)
+
+                    break
 
 
-
+for path in paths:
+    file_process(path)
