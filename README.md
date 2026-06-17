@@ -59,4 +59,4 @@ A Python-based automation tool with a graphical interface that organizes files f
 
 ```text
 main_gui.py     → GUI layer
-download_m.py   → backend logic (file processing)
+file_organizer.py   → backend logic (file processing)
