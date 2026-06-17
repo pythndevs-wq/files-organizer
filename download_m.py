@@ -1,61 +1,61 @@
-#!/usr/bin/env python3
-
-from pathlib import Path
 import shutil
+from pathlib import Path
 
-print("This will oigaize your whole Windows/Linux default folder's files")
-input("Press enter to start")
-print("Your Downloads are going to be managed")
 
+# ----------------------------
+# File type rules (extension → folder mapping)
+# This decides where each file will go
+# ----------------------------
 file_types = {
     "Images": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
-    "Videos": [".mp4", ".mkv", ".mov", ".avi", ".m4a"],
+    "Videos": [".mp4", ".mkv", ".mov", ".avi"],
     "Audio": [".mp3", ".wav", ".flac"],
-    "Documents": [".pdf", ".doc", ".docx", ".txt", ".ppt", ".pptx", ".xls", ".xlsx"],
-    "Archives": [".zip", ".rar", ".7z", ".tar", ".gz", ".xz"],
-    "Code": [".py", ".c", ".cpp", ".js", ".html", ".css"],
-    "Disk Images": [".iso"],
-    "Programs": [".exe", ".deb"],
-    "Apps": [".apk", ".xapk"]
+    "Documents": [".pdf", ".doc", ".docx", ".txt"],
+    "Archives": [".zip", ".rar", ".7z"],
+    "Code": [".py", ".js", ".html", ".css"]
 }
 
-paths = [
-    Path.home() / "Downloads",
-    Path.home() / "Desktop",
-    Path.home() / "Documents",
-    Path.home() / "Pictures",
-    Path.home() / "Videos",
-    Path.home() / "Music",
-]
 
+# ----------------------------
+# Moves a single file to its correct folder
+# Also sends update to GUI log
+# ----------------------------
+def move_files(file, folder, base_path, log):
 
-def move_files(file, folder, base_path):
+    # create final destination path
     destination = (base_path / folder) / file.name
+
+    # move file to new location
     shutil.move(file, destination)
-    print(file.name, "Successfully moved to", folder)
+
+    # update GUI about move
+    log(f"[✓] {file.name} → {folder}")
 
 
-def file_process(folder_path):
+# ----------------------------
+# Processes one folder (Downloads/Desktop/etc.)
+# Scans all files and organizes them
+# ----------------------------
+def file_process(path, log):
 
-    if not folder_path.exists():
-        return
+    # notify that scanning started
+    log(f"Opening: {path}")
 
-    print("Directory Opened:", folder_path)
+    # loop through everything inside folder
+    for item in path.iterdir():
 
-    for item in folder_path.iterdir():
-
+        # only process files (ignore folders)
         if item.is_file():
 
+            # check file type and match with rules
             for folder, extensions in file_types.items():
 
                 if item.suffix.lower() in extensions:
 
-                    (folder_path / folder).mkdir(exist_ok=True)
+                    # create folder if it doesn't exist
+                    (path / folder).mkdir(exist_ok=True)
 
-                    move_files(item, folder, folder_path)
+                    # move file + log it
+                    move_files(item, folder, path, log)
 
                     break
-
-
-for path in paths:
-    file_process(path)
