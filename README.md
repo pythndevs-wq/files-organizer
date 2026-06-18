@@ -1,62 +1,53 @@
-# 📂 Smart File Organizer v1.0
+# 📂 Downloads Organizer
 
-A Python-based automation tool with a graphical interface that organizes files from system folders into categorized directories.
+A simple Python automation tool that organizes files from multiple folders (Downloads, Desktop, Documents, etc.) into categorized folders based on file type.
 
 ---
 
 ## 🚀 Features
 
-- Graphical User Interface (Tkinter)
-- Live logging of file movements
-- Modular backend design (GUI + logic separated)
-- Organizes files by type:
+- Works on **Linux & Windows**
+- Organizes multiple default folders automatically
+- Sorts files by extension:
   - Images
   - Videos
   - Audio
   - Documents
   - Archives
-  - Code files
-- Cross-platform support (Linux & Windows)
-- Safe folder scanning with skip handling
+  - Code
+  - Apps / Programs
+- Automatically creates required folders
+- Safe skipping for missing directories
+- Case-insensitive extension handling
 
 ---
 
-## 🧠 How It Works
+## 📁 Supported Paths
 
-1. User clicks **"Order Chaos"**
-2. Application scans default system folders:
-   - Downloads
-   - Desktop
-   - Documents
-   - Pictures
-   - Videos
-   - Music
-3. Files are categorized based on extension
-4. Files are moved into proper folders
-5. Live logs are shown in GUI
+The script scans:
 
----
+- Downloads
+- Desktop
+- Documents
+- Pictures
+- Videos
+- Music
 
-## 🖥️ UI Features
-
-- Dark themed interface
-- Greeting message
-- Start button
-- Live log window showing real-time file actions
+(All based on `Path.home()` → cross-platform safe)
 
 ---
 
-## 🛠️ Tech Used
+## 🛠️ Requirements
 
-- Python 3
-- Tkinter (GUI)
-- pathlib (file handling)
-- shutil (file moving)
+- Python 3.x
+
+No external libraries needed (uses built-in modules only):
+- pathlib
+- shutil
 
 ---
 
-## 📁 Project Structure
+## ▶️ How to Run
 
-```text
-main_gui.py     → GUI layer
-file_organizer.py   → backend logic (file processing)
+```bash
+python organizer.py

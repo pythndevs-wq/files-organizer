@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from file_organizer import file_process
 from pathlib import Path
@@ -6,7 +7,7 @@ from pathlib import Path
 # Create main application window
 # ----------------------------
 root = tk.Tk()
-root.geometry("500x500")
+root.geometry("500x700")
 root.title("Smart File Organizer v1.0")
 root.configure(bg="#1e1e2e")
 
@@ -46,6 +47,8 @@ def log(message):
 # This connects GUI with backend logic
 # ----------------------------
 def start_organizing():
+    # Clear previous logs
+    log_box.delete("1.0", tk.END)
 
     log("Organizing started...\n")
 
@@ -75,6 +78,27 @@ def start_organizing():
     log("\nDone 😈")
 
 
+def custom_path_organize():
+
+    # Clear previous logs
+    log_box.delete("1.0", tk.END)
+
+    log("Organizing started...\n")
+
+    custom_path = Path(path_entry.get())
+
+    if not custom_path.exists():
+        return log(f"[SKIP] {custom_path} (Path does not exist)")
+
+    if not custom_path.is_dir():
+        return log(f"[SKIP] {custom_path} (Not a folder)")
+
+    log(f"\nScanning: {custom_path}")
+
+    file_process(custom_path, log)
+
+    log("\nDone 😈")
+
 # ----------------------------
 # Button to start the process
 # User clicks this to begin organizing
@@ -88,6 +112,28 @@ btn = tk.Button(
     font=("Arial", 14, "bold")
 )
 btn.pack(pady=10)
+
+#----------------------------
+# Label for alternative input
+#----------------------------
+or_label = tk.Label(root, text="Or\nEnter the path to organize:", font=("Arial", 12), fg="white", bg="#1e1e2e")
+or_label.pack(pady=10)
+
+path_entry = tk.Entry(root, width=40, bg="#111", fg="white")
+path_entry.pack(pady=5)
+
+#----------------------------
+# Button for custom path organization
+#----------------------------
+custom_btn = tk.Button(
+    root,
+    text="Organize Custom Path",
+    command=custom_path_organize,
+    bg="#2196F3",
+    fg="white",
+    font=("Arial", 14, "bold")
+)
+custom_btn.pack(pady=10)
 
 
 # ----------------------------
